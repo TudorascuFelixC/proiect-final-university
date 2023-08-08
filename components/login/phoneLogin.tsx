@@ -25,35 +25,35 @@ export default function PhoneLogin(props: any) {
   }, [error, props]);
 
   const signInWithPhone = async () => {
-    setLoading(true);
-    firebaseAuth.useDeviceLanguage();
-    const recaptchaVerifier = new RecaptchaVerifier(
-      "recaptcha-container",
-      {
-        size: "invisible",
-        callback: (response: any) => {
-          // console.log(response);
-          setCaptchaVerified(true);
-        },
-      },
-      firebaseAuth
-    );
-    const provider = new PhoneAuthProvider(firebaseAuth);
-    provider
-      .verifyPhoneNumber(phoneNumber, recaptchaVerifier)
-      .then((verificationId) => {
-        if (verificationId) {
-          setCodeSent(true);
-          setVerificationId(verificationId);
-          setError("");
-          setLoading(false);
-        }
-      })
-      .catch((error) => {
-        // console.log(error.message);
-        setError(error.code);
-        setLoading(false);
-      });
+    // setLoading(true);
+    // firebaseAuth.useDeviceLanguage();
+    // const recaptchaVerifier = new RecaptchaVerifier(
+    //   "recaptcha-container",
+    //   {
+    //     size: "invisible",
+    //     callback: (response: any) => {
+    //       // console.log(response);
+    //       setCaptchaVerified(true);
+    //     },
+    //   },
+    //   firebaseAuth
+    // );
+    // const provider = new PhoneAuthProvider(firebaseAuth);
+    // provider
+    //   .verifyPhoneNumber(phoneNumber, recaptchaVerifier)
+    //   .then((verificationId) => {
+    //     if (verificationId) {
+    //       setCodeSent(true);
+    //       setVerificationId(verificationId);
+    //       setError("");
+    //       setLoading(false);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     // console.log(error.message);
+    //     setError(error.code);
+    //     setLoading(false);
+    //   });
   };
 
   const verify = async () => {
