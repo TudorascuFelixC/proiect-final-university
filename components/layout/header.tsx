@@ -21,9 +21,9 @@ export default function Header() {
   };
 
   return (
-    <header className="flex justify-between items-center bg-rose-300 shadow-md p-10 relative z-10">
-      <div className="flex-grow">
-        <h2 className="text-3xl text-slate-800 ml-52">
+    <header className="flex justify-between items-center  shadow-md p-2 relative z-10 w-full">
+      <div className=" pr-2">
+        <h2 className="text-3xl text-slate-800">
           <Link href="/" className="header-link">
             SOLENT UNIVERSITY LEARNING
           </Link>
