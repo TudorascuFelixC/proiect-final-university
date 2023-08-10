@@ -14,6 +14,17 @@ const config: Config = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
           'frame1': 'url("/frame1.png")',
       },
+      animation: {
+        // bounce from left to right
+        'left-right': 'left-right 0.5s linear infinite',
+      },
+      keyframes: {
+        // bounce from left to right
+        'left-right': {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '50%': { transform: 'translateX(10%)' },
+        },
+      },
     },
   },
   plugins: [],

@@ -30,7 +30,7 @@ export default function Carousel(props: any) {
           </SwiperSlide>
           <SwiperSlide>
             <div className="flex flex-col items-center justify-center relative h-full w-full bg-slate-700 rounded">
-              <img src="/slideshow/photo3.jpg" alt="" />
+              <img src="/slideshow/photo3.jpg" alt="x" />
             </div>
           </SwiperSlide>
         </Swiper>
