@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Title(props: any) {
   return (
-    <div className="bg-red-600 flex flex-col items-center justify-center">
+    <div className={`bg-frame1 flex flex-col items-center justify-center`}>
       <div>
         <h1 className="text-3xl text-black bg-white mb-2">{props.title}</h1>
       </div>

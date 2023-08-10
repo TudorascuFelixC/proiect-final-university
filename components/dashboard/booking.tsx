@@ -6,6 +6,7 @@ import { User, onAuthStateChanged } from "firebase/auth";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import Book from "./book";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -28,6 +29,7 @@ export default function Booking() {
 
   React.useEffect(() => {
     onAuthStateChanged(firebaseAuth, (user) => {
+      // Get the user
       if (user) {
         setUser(user);
       } else {
@@ -37,6 +39,7 @@ export default function Booking() {
   }, []);
 
   const handleClose = (
+    // Handle close snackbar
     event?: React.SyntheticEvent | Event,
     reason?: string
   ) => {
@@ -48,14 +51,15 @@ export default function Booking() {
   };
 
   const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    setLoadingSendRemark(true);
+    // Handle submit
+    e.preventDefault(); // Prevent default form submit
+    setLoadingSendRemark(true); // Set loading to true
     const data = {
       remarkText,
       user: user?.uid,
     };
-    const docRef = doc(collection(firestoreDB, "remarks"));
-    await setDoc(docRef, data)
+    const docRef = doc(collection(firestoreDB, "remarks")); // Get the document reference
+    await setDoc(docRef, data) // Set the document data
       .then(() => {
         setLoadingSendRemark(false);
         setRemarkText("");
@@ -65,7 +69,6 @@ export default function Booking() {
       })
       .catch((error: any) => {
         setLoadingSendRemark(false);
-        console.error("Error adding document: ", error);
         setSnackbarMessage("Error sending remark!");
         setSnackbarSeverity("error");
         setSnackbarOpen(true);
@@ -74,11 +77,14 @@ export default function Booking() {
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-row">
-        <div className="w-1/2">
+      <div className="flex flex-col md:flex-row">
+        <div className="relative w-full md:w-1/2 flex flex-col justify-end items-end">
+          <div className="absolute bottom-0 right-0 flex flex-col justify-between items-center gap-2 p-2 z-10">
+            <Book itemId={currentId} />
+          </div>
           <Carousel itemId={currentId} />
         </div>
-        <div className="w-1/2 p-4 flex flex-col gap-2">
+        <div className="w-full md:w-1/2 p-4 flex flex-col gap-2">
           <div className="flex flex-col bg-gray-500 p-2 text-black rounded">
             He unaffected sympathize discovered at no am conviction principles.
             Girl ham very how yet hill four show. Meet lain on he only size.
@@ -109,7 +115,7 @@ export default function Booking() {
                   disabled={loadingSendRemark}
                   className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
                 >
-                  {loadingSendRemark ? "Sending..." : "Send"}
+                  {loadingSendRemark ? "Sending..." : "Book Now"}
                 </button>
               </div>
             </div>
