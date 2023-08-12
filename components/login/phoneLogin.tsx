@@ -103,8 +103,8 @@ export default function PhoneLogin(props: any) {
       <div className="mb-4">
         <div className="py-5 flex justify-between">
           {codeSent
-            ? "Codul de verificare a fost trimis"
-            : "Introdu numarul de telefon"}
+            ? "Verification code has been sent"
+            : "Enter your phone number"}
         </div>
 
         <div className="flex justify-center w-full">
@@ -117,14 +117,14 @@ export default function PhoneLogin(props: any) {
               htmlFor="phone"
               className="block text-gray-700 text-sm font-bold mb-2"
             >
-              Numarul de telefon
+              Your phone number
             </label>
             <div className="">
               <input
                 type="tel"
                 id="phone"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="+40726552269"
+                placeholder="+44 73*** *** ***"
                 pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
                 required
                 value={phoneNumber}
@@ -142,7 +142,7 @@ export default function PhoneLogin(props: any) {
               htmlFor="verificationCode"
               className="block text-gray-700 text-sm font-bold mb-2"
             >
-              Codul de verificare
+              The verification code
             </label>
             <input
               type="number"
@@ -160,7 +160,7 @@ export default function PhoneLogin(props: any) {
           {loading ? (
             <>
               <button className="w-full text-black  bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 justify-center">
-                Se incarca...
+                Loading... Please wait
               </button>
             </>
           ) : codeSent ? (
@@ -175,7 +175,7 @@ export default function PhoneLogin(props: any) {
               onClick={signInWithPhone}
               className="w-full text-black  bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 justify-center"
             >
-              Trimite codul
+              Send the code
             </button>
           )}
         </div>

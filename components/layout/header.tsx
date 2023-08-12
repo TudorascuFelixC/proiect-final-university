@@ -21,10 +21,13 @@ export default function Header() {
   };
 
   return (
-    <header className="flex justify-between items-center  shadow-md p-2 relative z-10 w-full">
+    <header className="flex justify-between items-center p-2 relative z-10 w-full">
       <div className=" pr-2">
-        <h2 className="text-3xl text-slate-800">
-          <Link href="/" className="header-link">
+        <h2 className="text-3xl text-slate-900">
+          <Link
+            href="/"
+            className="header-link max-w-lg text-3xl font-semibold leading-normal text-gray-900 dark:text-back font-display: 'Times New Roman', sans-serif;"
+          >
             SOLENT UNIVERSITY LEARNING
           </Link>
         </h2>
@@ -32,12 +35,12 @@ export default function Header() {
       <div className="header-right">
         {user && (
           <div className="flex items-center">
-            <span className="text-slate-800 mr-2">
+            <span className="text-slate-800 mr-2 font-semibold font-display: 'Times New Roman', sans-serif;">
               Welcome, {user.displayName}
             </span>
             <button
               onClick={logOut}
-              className="text-slate-800 hover:text-slate-900"
+              className="text-slate-800 hover:text-slate-900 font-semibold"
             >
               Log out
             </button>

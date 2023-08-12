@@ -1,7 +1,13 @@
 import React from "react";
 import Carousel from "./carousel";
 import { firestoreDB, firebaseAuth } from "@/firebase.config";
-import { collection, doc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+  onSnapshot,
+} from "firebase/firestore";
 import { User, onAuthStateChanged } from "firebase/auth";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
@@ -26,6 +32,7 @@ export default function Booking() {
   const [snackbarSeverity, setSnackbarSeverity] = React.useState<
     "success" | "info" | "warning" | "error" | undefined
   >("success");
+  const [checked, setChecked] = React.useState<any>([]);
 
   React.useEffect(() => {
     onAuthStateChanged(firebaseAuth, (user) => {
@@ -36,6 +43,21 @@ export default function Booking() {
         setUser(null);
       }
     });
+  }, []);
+
+  React.useEffect(() => {
+    // Get the booking
+    const unsubscribe = onSnapshot(
+      doc(firestoreDB, "bookings", "UniversityMeeting"),
+      (doc) => {
+        if (doc.exists()) {
+          // console.log("Document data:", doc.data());
+          setChecked(doc.data().checked);
+          setRemarkText(doc.data().remarkText);
+        }
+      }
+    );
+    return () => unsubscribe();
   }, []);
 
   const handleClose = (
@@ -56,14 +78,14 @@ export default function Booking() {
     setLoadingSendRemark(true); // Set loading to true
     const data = {
       remarkText,
+      checked: checked,
       user: user?.uid,
     };
-    const docRef = doc(collection(firestoreDB, "remarks")); // Get the document reference
+    const docRef = doc(firestoreDB, "bookings", "UniversityMeeting"); // Get the document reference
     await setDoc(docRef, data) // Set the document data
       .then(() => {
         setLoadingSendRemark(false);
-        setRemarkText("");
-        setSnackbarMessage("Remark sent successfully!");
+        setSnackbarMessage("Booking saved successfully!");
         setSnackbarSeverity("success");
         setSnackbarOpen(true);
       })
@@ -75,12 +97,20 @@ export default function Booking() {
       });
   };
 
+  const handleChecked = (e: any) => {
+    setChecked(e);
+  };
+
   return (
     <div className="flex flex-col">
       <div className="flex flex-col md:flex-row">
         <div className="relative w-full md:w-1/2 flex flex-col justify-end items-end">
           <div className="absolute bottom-0 right-0 flex flex-col justify-between items-center gap-2 p-2 z-10">
-            <Book itemId={currentId} />
+            <Book
+              itemId={currentId}
+              checked={checked}
+              setChecked={handleChecked}
+            />
           </div>
           <Carousel itemId={currentId} />
         </div>
@@ -122,9 +152,9 @@ export default function Booking() {
           </form>
         </div>
       </div>
-      <div className="flex flex-row">
+      <div className="flex flex-row justify-center pt-2">
         <div
-          className="cursor-pointer border rounded p-2"
+          className="flex cursor-pointer border rounded p-2"
           onClick={() => {
             if (currentId == 1) setCurrentId(2);
             else if (currentId == 2) setCurrentId(1);
