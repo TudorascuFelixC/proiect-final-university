@@ -12,7 +12,8 @@ import { User, onAuthStateChanged } from "firebase/auth";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import Book from "./book";
+import Book1 from "./book1";
+import Book2 from "./book2";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -32,7 +33,9 @@ export default function Booking() {
   const [snackbarSeverity, setSnackbarSeverity] = React.useState<
     "success" | "info" | "warning" | "error" | undefined
   >("success");
-  const [checked, setChecked] = React.useState<any>([]);
+  const [checked1, setChecked1] = React.useState<any>([]);
+  const [checked2, setChecked2] = React.useState<any>([]);
+  const [booked, setBooked] = React.useState<any>([]);
 
   React.useEffect(() => {
     onAuthStateChanged(firebaseAuth, (user) => {
@@ -52,7 +55,7 @@ export default function Booking() {
       (doc) => {
         if (doc.exists()) {
           // console.log("Document data:", doc.data());
-          setChecked(doc.data().checked);
+          setBooked(doc.data().checked);
           setRemarkText(doc.data().remarkText);
         }
       }
@@ -78,7 +81,7 @@ export default function Booking() {
     setLoadingSendRemark(true); // Set loading to true
     const data = {
       remarkText,
-      checked: checked,
+      checked: checked1.concat(checked2),
       user: user?.uid,
     };
     const docRef = doc(firestoreDB, "bookings", "UniversityMeeting"); // Get the document reference
@@ -97,8 +100,12 @@ export default function Booking() {
       });
   };
 
-  const handleChecked = (e: any) => {
-    setChecked(e);
+  const handleChecked1 = (e: any) => {
+    setChecked1(e);
+  };
+
+  const handleChecked2 = (e: any) => {
+    setChecked2(e);
   };
 
   return (
@@ -106,11 +113,19 @@ export default function Booking() {
       <div className="flex flex-col md:flex-row">
         <div className="relative w-full md:w-1/2 flex flex-col justify-end items-end">
           <div className="absolute bottom-0 right-0 flex flex-col justify-between items-center gap-2 p-2 z-10">
-            <Book
-              itemId={currentId}
-              checked={checked}
-              setChecked={handleChecked}
-            />
+            {currentId == 1 ? (
+              <Book1
+                itemId={currentId}
+                checked={booked}
+                setChecked={handleChecked1}
+              />
+            ) : (
+              <Book2
+                itemId={currentId}
+                checked={booked}
+                setChecked={handleChecked2}
+              />
+            )}
           </div>
           <Carousel itemId={currentId} />
         </div>
