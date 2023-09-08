@@ -7,6 +7,7 @@ import {
   setDoc,
   getDoc,
   onSnapshot,
+  arrayUnion,
 } from "firebase/firestore";
 import { User, onAuthStateChanged } from "firebase/auth";
 import Button from "@mui/material/Button";
@@ -14,6 +15,11 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import Book1 from "./book1";
 import Book2 from "./book2";
+import { StaticDateTimePicker } from "@mui/x-date-pickers/StaticDateTimePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from "dayjs";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -36,6 +42,7 @@ export default function Booking() {
   const [checked1, setChecked1] = React.useState<any>([]);
   const [checked2, setChecked2] = React.useState<any>([]);
   const [booked, setBooked] = React.useState<any>([]);
+  const [dateTimePicked, setDateTimePicked] = React.useState<any>("");
 
   React.useEffect(() => {
     onAuthStateChanged(firebaseAuth, (user) => {
@@ -81,11 +88,11 @@ export default function Booking() {
     setLoadingSendRemark(true); // Set loading to true
     const data = {
       remarkText,
-      checked: checked1.concat(checked2),
+      checked: arrayUnion({ time: dateTimePicked, remarkText: remarkText }),
       user: user?.uid,
     };
     const docRef = doc(firestoreDB, "bookings", "UniversityMeeting"); // Get the document reference
-    await setDoc(docRef, data) // Set the document data
+    await setDoc(docRef, data, { merge: true }) // Set the document data
       .then(() => {
         setLoadingSendRemark(false);
         setSnackbarMessage("Booking saved successfully!");
@@ -108,24 +115,66 @@ export default function Booking() {
     setChecked2(e);
   };
 
+  const getReservedHours = (booked: any) => {
+    // console.log(booked);
+    const reservedHours: any = {};
+
+    booked.forEach((booking: any) => {
+      const timestamp = booking.time.seconds;
+      const date = dayjs.unix(timestamp).format("YYYY-MM-DD");
+      const hour = dayjs.unix(timestamp).format("HH");
+
+      if (!reservedHours[date]) {
+        reservedHours[date] = [];
+      }
+
+      reservedHours[date].push(hour);
+    });
+
+    return reservedHours;
+  };
+
   return (
     <div className="flex flex-col">
       <div className="flex flex-col md:flex-row">
         <div className="relative w-full md:w-1/2 flex flex-col justify-end items-end">
           <div className="absolute bottom-0 right-0 flex flex-col justify-between items-center gap-2 p-2 z-10">
-            {currentId == 1 ? (
-              <Book1
-                itemId={currentId}
-                checked={booked}
-                setChecked={handleChecked1}
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateTimePicker
+                defaultValue={dayjs("2022-04-17T15:30")}
+                views={["year", "month", "day", "hours", "minutes"]}
+                onChange={(newValue) => {
+                  setDateTimePicked(new Date(newValue));
+                }}
+                value={dateTimePicked}
+                shouldDisableTime={(date) => {
+                  const formattedDate = date.format("YYYY-MM-DD");
+                  const reservedHours = getReservedHours(booked);
+
+                  // Verificăm dacă data este rezervată și dacă ora este în listă
+                  if (reservedHours[formattedDate]) {
+                    const hour = date.format("HH");
+                    // console.log(hour);
+                    return reservedHours[formattedDate].includes(hour);
+                  }
+
+                  return false;
+                }}
               />
-            ) : (
-              <Book2
-                itemId={currentId}
-                checked={booked}
-                setChecked={handleChecked2}
-              />
-            )}
+              {/* {currentId == 1 ? (
+                <Book1
+                  itemId={currentId}
+                  checked={booked}
+                  setChecked={handleChecked1}
+                />
+              ) : (
+                <Book2
+                  itemId={currentId}
+                  checked={booked}
+                  setChecked={handleChecked2}
+                />
+              )} */}
+            </LocalizationProvider>
           </div>
           <Carousel itemId={currentId} />
         </div>
