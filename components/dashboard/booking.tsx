@@ -13,8 +13,6 @@ import { User, onAuthStateChanged } from "firebase/auth";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import Book1 from "./book12";
-import Book2 from "./book22";
 import { StaticDateTimePicker } from "@mui/x-date-pickers/StaticDateTimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
