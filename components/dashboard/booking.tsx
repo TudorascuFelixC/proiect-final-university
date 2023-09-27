@@ -13,8 +13,6 @@ import { User, onAuthStateChanged } from "firebase/auth";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import Book1 from "./book1";
-import Book2 from "./book2";
 import { StaticDateTimePicker } from "@mui/x-date-pickers/StaticDateTimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -46,7 +44,7 @@ export default function Booking() {
 
   React.useEffect(() => {
     onAuthStateChanged(firebaseAuth, (user) => {
-      // Get the user
+      // Get the user from firebase
       if (user) {
         setUser(user);
       } else {
@@ -56,14 +54,14 @@ export default function Booking() {
   }, []);
 
   React.useEffect(() => {
-    // Get the booking
+    // Get the booking data from firebase
     const unsubscribe = onSnapshot(
       doc(firestoreDB, "bookings", "UniversityMeeting"),
       (doc) => {
         if (doc.exists()) {
           // console.log("Document data:", doc.data());
-          setBooked(doc.data().checked);
-          setRemarkText(doc.data().remarkText);
+          setBooked(doc.data().checked); // Set the booked data
+          setRemarkText(doc.data().remarkText); // Set the remark text
         }
       }
     );
@@ -71,7 +69,7 @@ export default function Booking() {
   }, []);
 
   const handleClose = (
-    // Handle close snackbar
+    // Handle close snackbar event
     event?: React.SyntheticEvent | Event,
     reason?: string
   ) => {
@@ -79,31 +77,31 @@ export default function Booking() {
       return;
     }
 
-    setSnackbarOpen(false);
+    setSnackbarOpen(false); // Set snackbar open to false
   };
 
   const handleSubmit = async (e: any) => {
-    // Handle submit
-    e.preventDefault(); // Prevent default form submit
-    setLoadingSendRemark(true); // Set loading to true
+    // Handle submit event for booking
+    e.preventDefault(); // Prevent default form submit event behavior (refreshing page)
+    setLoadingSendRemark(true); // Set loading to true while sending remark to firebase
     const data = {
       remarkText,
-      checked: arrayUnion({ time: dateTimePicked, remarkText: remarkText }),
+      checked: arrayUnion({ time: dateTimePicked, remarkText: remarkText }), // Add the new booking to the array of bookings in firebase
       user: user?.uid,
     };
-    const docRef = doc(firestoreDB, "bookings", "UniversityMeeting"); // Get the document reference
-    await setDoc(docRef, data, { merge: true }) // Set the document data
+    const docRef = doc(firestoreDB, "bookings", "UniversityMeeting"); // Get the document reference from firebase
+    await setDoc(docRef, data, { merge: true }) // Set the document data to the new data with merge option set to true to merge the new data with the old data in firebase
       .then(() => {
         setLoadingSendRemark(false);
-        setSnackbarMessage("Booking saved successfully!");
-        setSnackbarSeverity("success");
-        setSnackbarOpen(true);
+        setSnackbarMessage("Booking saved successfully!"); // Set snackbar message to success message
+        setSnackbarSeverity("success"); // Set snackbar severity to success severity
+        setSnackbarOpen(true); // Set snackbar open to true to show the snackbar message to the user
       })
       .catch((error: any) => {
-        setLoadingSendRemark(false);
-        setSnackbarMessage("Error sending remark!");
-        setSnackbarSeverity("error");
-        setSnackbarOpen(true);
+        setLoadingSendRemark(false); // Set loading to false if there is an error while sending remark to firebase
+        setSnackbarMessage("Error sending remark!"); // Set snackbar message to error message
+        setSnackbarSeverity("error"); // Set snackbar severity to error severity
+        setSnackbarOpen(true); // Set snackbar open to true to show the snackbar message to the user
       });
   };
 
@@ -135,10 +133,10 @@ export default function Booking() {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       <div className="flex flex-col md:flex-row">
         <div className="relative w-full md:w-1/2 flex flex-col justify-end items-end">
-          <div className="absolute bottom-0 right-0 flex flex-col justify-between items-center gap-2 p-2 z-10">
+          <div className="absolute bottom-0 right-0 flex flex-col justify-between items-center gap-2 p-2 z-10 bg-gray-200">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateTimePicker
                 defaultValue={dayjs("2022-04-17T15:30")}
@@ -151,7 +149,7 @@ export default function Booking() {
                   const formattedDate = date.format("YYYY-MM-DD");
                   const reservedHours = getReservedHours(booked);
 
-                  // Verificăm dacă data este rezervată și dacă ora este în listă
+                  // We are checking if the date is booked and if the time is in the list. If it is, we disable it.
                   if (reservedHours[formattedDate]) {
                     const hour = date.format("HH");
                     // console.log(hour);
@@ -161,31 +159,17 @@ export default function Booking() {
                   return false;
                 }}
               />
-              {/* {currentId == 1 ? (
-                <Book1
-                  itemId={currentId}
-                  checked={booked}
-                  setChecked={handleChecked1}
-                />
-              ) : (
-                <Book2
-                  itemId={currentId}
-                  checked={booked}
-                  setChecked={handleChecked2}
-                />
-              )} */}
+              {}
             </LocalizationProvider>
           </div>
           <Carousel itemId={currentId} />
         </div>
         <div className="w-full md:w-1/2 p-4 flex flex-col gap-2">
           <div className="flex flex-col bg-gray-500 p-2 text-black rounded">
-            He unaffected sympathize discovered at no am conviction principles.
-            Girl ham very how yet hill four show. Meet lain on he only size.
-            Branched learning so subjects mistress do appetite jennings be in.
-            Esteems up lasting no village morning do offices. Settled wishing
-            ability musical may another set age. Diminution my apartments he
-            attachment is entreaties announcing estimating.
+            Feel free to use the Remarks section to specify any additional items
+            you require, such as water, pens, papers, or any other specific
+            needs. We are here to accommodate your preferences and make sure
+            your request is fulfilled to your satisfaction.
           </div>
           <form>
             <div className="w-full mb-4 border border-gray-200 rounded bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
@@ -216,7 +200,7 @@ export default function Booking() {
           </form>
         </div>
       </div>
-      <div className="flex flex-row justify-center pt-2">
+      <div className="flex flex-row justify-center pt-4">
         <div
           className="flex cursor-pointer border rounded p-2"
           onClick={() => {

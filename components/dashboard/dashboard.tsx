@@ -111,7 +111,7 @@ export default function Dashboard() {
     <div>
       <Title
         title="Contemporary Web Applications (QHO640)"
-        breadcrumb="Home > Contemporary Web Applications (QHO640) > Assessment"
+        breadcrumb="Home > Contemporary Web Applications (QHO640) > Book a slot"
       />
       <div className="container">
         <div className="flex flex-col pt-4">

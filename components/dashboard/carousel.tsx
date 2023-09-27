@@ -13,12 +13,14 @@ export default function Carousel(props: any) {
   return (
     <>
       <div className="w-[550px] border">
+        {" "}
         <Swiper
           pagination={true}
           modules={[Pagination]}
           className="h-[400px] w-full"
         >
           <SwiperSlide>
+            {" "}
             <div className="flex flex-col items-center justify-center relative h-full w-full bg-slate-700 rounded">
               <img src="/slideshow/photo1.jpg" alt="" />
             </div>
@@ -30,7 +32,7 @@ export default function Carousel(props: any) {
           </SwiperSlide>
           <SwiperSlide>
             <div className="flex flex-col items-center justify-center relative h-full w-full bg-slate-700 rounded">
-              <img src="/slideshow/photo3.jpg" alt="x" />
+              <img src="/slideshow/photo3.png" alt="" />
             </div>
           </SwiperSlide>
         </Swiper>
