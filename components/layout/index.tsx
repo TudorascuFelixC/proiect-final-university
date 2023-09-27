@@ -18,8 +18,16 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import LanguageIcon from "@mui/icons-material/Language";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import CollectionsBookmarkIcon from "@mui/icons-material/CollectionsBookmark";
+import DnsIcon from "@mui/icons-material/Dns";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import ContactSupportIcon from "@mui/icons-material/ContactSupport";
 
 const drawerWidth = 240;
 
@@ -142,13 +150,24 @@ export default function Layout({ children }: LayoutProps) {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Inbox 1", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
+          {[
+            { text: "Dashboard", icon: <DashboardIcon /> },
+            { text: "Participants", icon: <PeopleAltIcon /> },
+            { text: "My Courses", icon: <MenuBookIcon /> },
+            { text: "Online Helpdesk", icon: <LanguageIcon /> },
+            { text: "Staff help", icon: <ContactSupportIcon /> },
+            { text: "Library services", icon: <LibraryBooksIcon /> },
+            { text: "Bookmarks", icon: <CollectionsBookmarkIcon /> },
+            { text: "Activities", icon: <DnsIcon /> },
+            { text: "Calendar", icon: <CalendarMonthIcon /> },
+            { text: "LinkedIn Learning", icon: <LinkedInIcon /> },
+          ].map((item, index) => (
+            <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={{
-                  minHeight: 48,
+                  minHeight: 73.5,
                   justifyContent: open ? "initial" : "center",
-                  px: 2.5,
+                  px: 3,
                 }}
               >
                 <ListItemIcon
@@ -158,38 +177,17 @@ export default function Layout({ children }: LayoutProps) {
                     justifyContent: "center",
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {item.icon}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText
+                  primary={item.text}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
         <Divider />
-        <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1 }}>
         <DrawerHeader />

@@ -22,7 +22,12 @@ export default function Header() {
 
   return (
     <header className="flex justify-between items-center p-2 relative z-10 w-full">
-      <div className=" pr-2">
+      <div className="flex items-center pr-2">
+        <img
+          src="/slideshow/logo.png"
+          alt="Solent University Logo"
+          className="w-10 h-10 mr-2"
+        />
         <h2 className="text-3xl text-slate-900">
           <Link
             href="/"
