@@ -4,7 +4,7 @@ import { firebaseAuth } from "@/firebase.config";
 import { User, onAuthStateChanged, signOut } from "firebase/auth";
 
 export default function Header() {
-  const [user, setUser] = React.useState<User | null>(null);
+  const [user, setUser] = React.useState<User | null>(null); // set the user state to null by default and update it when the user logs in or out using the setUser function from React.useState hook and the User type from firebase.auth module
 
   React.useEffect(() => {
     onAuthStateChanged(firebaseAuth, (user) => {
@@ -14,11 +14,11 @@ export default function Header() {
         setUser(null);
       }
     });
-  }, []);
+  }, []); // use the onAuthStateChanged function from firebase.auth module to check if the user is logged in or not and update the user state accordingly using the setUser function from React.useState hook and the User type from firebase.auth module and use the useEffect hook from React to run this function only once when the component is mounted
 
   const logOut = async () => {
     await signOut(firebaseAuth);
-  };
+  }; // create a function to log out the user using the signOut function from firebase.auth module and the firebaseAuth object from firebase.config module and the async/await syntax to wait for the user to be logged out before proceeding to the next step in the function execution flow
 
   return (
     <header className="flex justify-between items-center p-2 relative z-10 w-full">

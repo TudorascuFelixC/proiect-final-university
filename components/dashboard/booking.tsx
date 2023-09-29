@@ -24,23 +24,24 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   ref
 ) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+}); // Alert component to show the snackbar message to the user in the dashboard page of the application
 
 export default function Booking() {
-  const [user, setUser] = React.useState<User | null>(null);
-  const [currentId, setCurrentId] = React.useState<number>(1);
-  const [remarkText, setRemarkText] = React.useState<string>("");
+  // Booking component for booking the meeting room in the dashboard page of the application
+  const [user, setUser] = React.useState<User | null>(null); // User state to store the user data from firebase if the user is logged in or null if the user is not logged in or logged out of the application from firebase authentication state
+  const [currentId, setCurrentId] = React.useState<number>(1); // Current id state to store the current id of the meeting room to be booked in the dashboard page of the application (1 or 2) to be used in the carousel component to show the meeting room image and details to the user in the dashboard page of the application (1 for the first meeting room and 2 for the second meeting room) and to be used in the booking component to show the booking form to the user in the dashboard page of the application (1 for the first meeting room and 2 for the second meeting room)
+  const [remarkText, setRemarkText] = React.useState<string>(""); // Remark text state to store the remark text from the user in the booking form in the dashboard page of the application to be used in the booking component to send the remark text to firebase
   const [loadingSendRemark, setLoadingSendRemark] =
-    React.useState<boolean>(false);
-  const [snackbarOpen, setSnackbarOpen] = React.useState<boolean>(false);
+    React.useState<boolean>(false); // Loading send remark state to store the loading state while sending the remark text to firebase in the booking component in the dashboard page of the application
+  const [snackbarOpen, setSnackbarOpen] = React.useState<boolean>(false); //
   const [snackbarMessage, setSnackbarMessage] = React.useState<string>("");
   const [snackbarSeverity, setSnackbarSeverity] = React.useState<
     "success" | "info" | "warning" | "error" | undefined
   >("success");
-  const [checked1, setChecked1] = React.useState<any>([]);
-  const [checked2, setChecked2] = React.useState<any>([]);
-  const [booked, setBooked] = React.useState<any>([]);
-  const [dateTimePicked, setDateTimePicked] = React.useState<any>("");
+  const [checked1, setChecked1] = React.useState<any>([]); // Checked 1 state to store the checked time slots of the first meeting room from the user in the booking form in the dashboard page of the application to be used in the booking component to send the checked time slots to firebase
+  const [checked2, setChecked2] = React.useState<any>([]); // Checked 2 state to store the checked time slots of the second meeting room from the user in the booking form in the dashboard page of the application to be used in the booking component to send the checked time slots to firebase
+  const [booked, setBooked] = React.useState<any>([]); // Booked state to store the booked time slots of the meeting rooms from firebase to be used in the booking component to show the booked time slots to the user in the dashboard page of the application and to be used in the booking component
+  const [dateTimePicked, setDateTimePicked] = React.useState<any>(""); // Date time picked state to store the date time picked by the user in the booking form in the dashboard page of the application to be used in the booking component to send the date time picked to firebase
 
   React.useEffect(() => {
     onAuthStateChanged(firebaseAuth, (user) => {
@@ -50,7 +51,7 @@ export default function Booking() {
       } else {
         setUser(null);
       }
-    });
+    }); // Get the user from firebase authentication state when the component is mounted and unmount the component when the component is unmounted to prevent memory leaks in the dashboard page of the application (if the user is logged in, set the user state to the user data from firebase, if the user is not logged in or logged out of the application, set the user state to null)
   }, []);
 
   React.useEffect(() => {
@@ -66,7 +67,7 @@ export default function Booking() {
       }
     );
     return () => unsubscribe();
-  }, []);
+  }, []); // Get the booking data from firebase when the component is mounted and unmount the component when the component is unmounted to prevent memory leaks in the dashboard page of the application
 
   const handleClose = (
     // Handle close snackbar event
@@ -78,7 +79,7 @@ export default function Booking() {
     }
 
     setSnackbarOpen(false); // Set snackbar open to false
-  };
+  }; // Handle close snackbar event to close the snackbar message in the dashboard page of the application when the user clicks away from the snackbar message or clicks on the snackbar message
 
   const handleSubmit = async (e: any) => {
     // Handle submit event for booking
@@ -88,7 +89,7 @@ export default function Booking() {
       remarkText,
       checked: arrayUnion({ time: dateTimePicked, remarkText: remarkText }), // Add the new booking to the array of bookings in firebase
       user: user?.uid,
-    };
+    }; // Data to be sent to firebase (remark text, checked time slots, and user id) in the booking component in the dashboard page of the application
     const docRef = doc(firestoreDB, "bookings", "UniversityMeeting"); // Get the document reference from firebase
     await setDoc(docRef, data, { merge: true }) // Set the document data to the new data with merge option set to true to merge the new data with the old data in firebase
       .then(() => {
@@ -107,30 +108,31 @@ export default function Booking() {
 
   const handleChecked1 = (e: any) => {
     setChecked1(e);
-  };
+  }; // Handle checked 1 event to set the checked time slots of the first meeting room from the user in the booking form in the dashboard page of the application to be used in the booking component to send the checked time slots to firebase
 
   const handleChecked2 = (e: any) => {
     setChecked2(e);
-  };
+  }; // Handle checked 2 event to set the checked time slots of the second meeting room from the user in the booking form in the dashboard page of the application to be used in the booking component to send the checked time slots to firebase
 
   const getReservedHours = (booked: any) => {
     // console.log(booked);
     const reservedHours: any = {};
 
     booked.forEach((booking: any) => {
+      // Loop through the booked data from firebase to get the reserved hours from the booked data from firebase to be used in the booking component to show the booked time slots to the user in the dashboard page of the application and to be used in the booking component to disable the booked time slots in the booking form in the dashboard page of the application to prevent the user from booking the booked time slots again
       const timestamp = booking.time.seconds;
       const date = dayjs.unix(timestamp).format("YYYY-MM-DD");
       const hour = dayjs.unix(timestamp).format("HH");
 
       if (!reservedHours[date]) {
         reservedHours[date] = [];
-      }
+      } // If the date is not in the reserved hours object, add it to the reserved hours object and set the value to an empty array
 
       reservedHours[date].push(hour);
     });
 
     return reservedHours;
-  };
+  }; // Get the reserved hours from the booked data from firebase to be used in the booking component to show the booked time slots to the user in the dashboard page of the application and to be used in the booking component to disable the booked time slots in the booking form in the dashboard page of the application to prevent the user from booking the booked time slots again
 
   return (
     <div className="flex flex-col ">
@@ -143,7 +145,7 @@ export default function Booking() {
                 views={["year", "month", "day", "hours", "minutes"]}
                 onChange={(newValue) => {
                   setDateTimePicked(new Date(newValue));
-                }}
+                }} // Set the date time picked by the user in the booking form in the dashboard page of the application to be used in the booking component to send the date time picked to firebase
                 value={dateTimePicked}
                 shouldDisableTime={(date) => {
                   const formattedDate = date.format("YYYY-MM-DD");

@@ -107,6 +107,7 @@ const row3 = [
 ];
 
 export default function Dashboard() {
+  // create a function to display the dashboard component with the title, breadcrumb, and the buttons to be displayed in the dashboard as props
   return (
     <div>
       <Title

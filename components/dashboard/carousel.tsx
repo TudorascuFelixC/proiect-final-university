@@ -10,6 +10,7 @@ import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 
 export default function Carousel(props: any) {
+  // create a function to display the carousel component with the images to be displayed in the carousel as props
   return (
     <>
       <div className="w-[550px] border">

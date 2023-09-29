@@ -14,14 +14,14 @@ import PhoneLogin from "./phoneLogin";
 export default function Login() {
   const router = useRouter();
 
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState("");
-  const [success, setSuccess] = React.useState(false);
-  const [emailLogin, setEmailLogin] = React.useState(true);
+  const [email, setEmail] = React.useState(""); // set the email state to an empty string by default and update it when the user types in the email input using the setEmail function from React.useState hook
+  const [password, setPassword] = React.useState(""); // set the password state to an empty string by default and update it when the user types in the password input using the setPassword function from React.useState hook
+  const [loading, setLoading] = React.useState(false); // set the loading state to false by default and update it when the user clicks on the login button using the setLoading function from React.useState hook
+  const [error, setError] = React.useState(""); // set the error state to an empty string by default and update it when the user types in the email or password input using the setError function from React.useState hook
+  const [success, setSuccess] = React.useState(false); // set the success state to false by default and update it when the user clicks on the login button using the setSuccess function from React.useState hook
+  const [emailLogin, setEmailLogin] = React.useState(true); // set the emailLogin state to true by default and update it when the user clicks on the login button using the setEmailLogin function from React.useState hook
 
-  //on key enter press
+  // Press Enter to login with email and password
   const handleKeyDown = (e: any) => {
     if (e.key === "Enter") {
       loginWithEmailAndPassword();
@@ -38,18 +38,18 @@ export default function Login() {
         // setLoading(false);
         // setSuccess(true);
         // router.push('/dashboard');
-      })
+      }) // create a function to login the user with email and password using the signInWithEmailAndPassword function from firebase.auth module and the firebaseAuth object from firebase.config module and the async/await syntax to wait for the user to be logged in before proceeding to the next step in the function execution flow
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        console.log(errorCode, errorMessage); // log the error code and message to the console for debugging purposes using the console.log function from the console module and the errorCode and errorMessage variables declared above as arguments to the function call
         if (errorCode === "auth/user-not-found") {
           createUserWithEmailAndPassword(firebaseAuth, email, password)
             .then((userCredential) => {
               const user = userCredential.user;
               console.log(user);
               loginWithEmailAndPassword();
-            })
+            }) // create a function to create a new user with email and password using the createUserWithEmailAndPassword function from firebase.auth module and the firebaseAuth object from firebase.config module and the async/await syntax to wait for the user to be created before proceeding to the next step in the function execution flow
             .catch((error) => {
               const errorCode = error.code;
               const errorMessage = error.message;
@@ -67,7 +67,7 @@ export default function Login() {
     const actionCodeSettings = {
       url: `${window.location.href}/login`,
       handleCodeInApp: true,
-    };
+    }; // create a variable to store the actionCodeSettings object with the url and handleCodeInApp properties declared above as values to the properties and the window.location.href variable from the window.location module as the value to the url property and the true boolean value as the value to the handleCodeInApp property to be used as an argument to the sendSignInLinkToEmail function from firebase.auth module
 
     sendSignInLinkToEmail(firebaseAuth, email, actionCodeSettings)
       .then(() => {
@@ -82,7 +82,7 @@ export default function Login() {
         setLoading(false);
         setError(errorMessage);
       });
-  };
+  }; // create a function to send the login link to the user's email using the sendSignInLinkToEmail function from firebase.auth module and the firebaseAuth object from firebase.config module and the async/await syntax to wait for the email to be sent before proceeding to the next step in the function execution flow
 
   const signInWithGoogle = () => {
     setLoading(true);
@@ -104,7 +104,7 @@ export default function Login() {
         setLoading(false);
         setError(errorMessage);
       });
-  };
+  }; // create a function to login the user with Google using the signInWithPopup function from firebase.auth module and the firebaseAuth object from firebase.config module and the async/await syntax to wait for the user to be logged in before proceeding to the next step in the function execution flow and the GoogleAuthProvider function from firebase.auth module and the provider variable declared above as arguments to the function call
 
   const resestPassword = () => {
     setLoading(true);
@@ -124,7 +124,7 @@ export default function Login() {
       setLoading(false);
       setError("The email is mandatory to be able to reset the password.");
     }
-  };
+  }; // create a function to reset the user's password using the sendPasswordResetEmail function from firebase.auth module and the firebaseAuth object from firebase.config module and the async/await syntax to wait for the email to be sent before proceeding to the next step in the function execution flow
 
   return (
     <div className="bg-cover bg-center min-h-screen flex items-start justify-center bg-[url('/slideshow/solent-university-southampton-banner.jpg')]">

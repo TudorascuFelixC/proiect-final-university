@@ -38,7 +38,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
     duration: theme.transitions.duration.enteringScreen,
   }),
   overflowX: "hidden",
-});
+}); // create a function to set the width of the drawer when it is open using the openedMixin function from @mui/material/styles module and the Theme type from @mui/material/styles module and the CSSObject type from @mui/material/styles module and the drawerWidth variable declared above as props
 
 const closedMixin = (theme: Theme): CSSObject => ({
   transition: theme.transitions.create("width", {
@@ -64,7 +64,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
-}
+} // create an interface to define the AppBarProps type as the MuiAppBarProps type from @mui/material/AppBar module and the open property as a boolean type and set it to optional using the ? symbol
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -83,7 +83,7 @@ const AppBar = styled(MuiAppBar, {
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
-}));
+})); // create a function to set the width of the app bar when the drawer is open using the AppBar function from @mui/material/AppBar module and the styled function from @mui/material/styles module and the AppBarProps type declared above as props
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",

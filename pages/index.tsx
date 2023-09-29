@@ -20,11 +20,11 @@ export default function Home() {
         setUser(null);
       }
     });
-  }, []);
+  }, []); // use the onAuthStateChanged function from firebase.auth module to check if the user is logged in or not and update the user state accordingly using the setUser function from React.useState hook and the User type from firebase.auth module and use the useEffect hook from React to run this function only once when the component is mounted
 
   return (
     <main>
       <Layout>{user ? <Dashboard /> : <Login />}</Layout>
     </main>
   );
-}
+} // create a function to display the home page with the login component if the user is not logged in and the dashboard component if the user is logged in using the user state and the setUser function from React.useState hook and the User type from firebase.auth module and the Login component and the Dashboard component from components/login/login.tsx and components/dashboard/dashboard.tsx respectively and the Layout component from components/layout/index.tsx
